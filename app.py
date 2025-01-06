@@ -2,7 +2,7 @@ from dotenv import dotenv_values
 from flask import Flask
 from mongoengine import connect
 from model import User, Post
-
+from utils import bson_to_json
 
 config = dotenv_values(".env")
 app = Flask(__name__)
@@ -22,4 +22,7 @@ init_mongo_client(app)
 def hello():
     return {"message": "Welcome to the Flask with MongoDB tutorial!!!"}
 
-
+@app.route("/users")
+def get_users():
+    users = User.objects()
+    return bson_to_json(users)
