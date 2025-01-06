@@ -1,0 +1,3 @@
+flask-mongoengine
+python-dotenv
+flask
