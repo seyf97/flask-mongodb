@@ -26,7 +26,12 @@ def hello():
 
 @app.route("/users")
 def get_users():
-    users = [user.to_mongo().to_dict() for user in User.objects]
+
+    keys_to_filter = ["email", "_id"]
+
+    users = [dict(filter(lambda item: item[0] in keys_to_filter, user.to_mongo().to_dict().items()))
+              for user in User.objects]
+        
     users_json = dumps({"Users": users})
 
     return Response(
