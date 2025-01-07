@@ -71,5 +71,43 @@ def register():
 
     user.save()
 
-
     return jsonify({"message": "Saved new user successfully."}), 200
+
+
+@app.route("/login", methods=["POST"])
+def login():
+    user_info = request.get_json(force=True, silent=True, cache=False)
+
+    # Check if the JSON body is valid
+    if user_info is None:
+        return jsonify({"message": "Invalid JSON body."}), 400
+    
+    # Check the fields
+    email = user_info.get("email")
+    password = user_info.get("password")
+
+    if not email or not password:
+        return jsonify({"message": "email and password are required."}), 400
+    
+    if len(user_info.keys()) > 2:
+        return jsonify({"message": "Only email and password fields are allowed."}), 400
+    
+    # Check if the required fields are present
+    # Technically should work since the prev checks should have caught this
+    try:
+        user = User(**user_info)
+    except me.errors.FieldDoesNotExist:
+        return jsonify({"message": "Invalid field name."}), 400
+    
+    # Check if the user exists
+    if not User.objects(email=user.email):
+        return jsonify({"message": "User doesn't exist, please register."}), 404
+    
+    # Check the password
+    db_user = User.objects(email=user.email).first()
+
+    # Wrong password
+    if not verify_password(user.password, db_user.salt, db_user.password):
+        return jsonify({"message": "Incorrect email or password."}), 401
+    
+    return jsonify({"message": "Logged in successfully."}), 200
