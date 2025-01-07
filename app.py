@@ -6,6 +6,7 @@ from utils import salt_hash_password, verify_password
 from bson.json_util import dumps
 from flask_jwt_extended import JWTManager, create_access_token, get_jwt_identity, jwt_required
 import datetime
+import json
 
 
 config = dotenv_values(".env")
@@ -38,17 +39,9 @@ def hello():
 @jwt_required()
 def get_users():
 
-    keys_to_filter = ["email", "_id"]
+    users = [{"email": user.email, "_id": str(user.pk)} for user in User.objects]
 
-    users = [dict(filter(lambda item: item[0] in keys_to_filter, user.to_mongo().to_dict().items()))
-              for user in User.objects]
-        
-    users_json = dumps({"Users": users})
-
-    return Response(
-            users_json,
-            content_type="application/json",
-        )
+    return jsonify(users), 200
 
 @app.route("/register", methods=["POST"])
 def register():
