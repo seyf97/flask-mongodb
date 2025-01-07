@@ -1,3 +1,4 @@
-flask-mongoengine
-python-dotenv
 flask
+flask-jwt-extended
+mongoengine
+python-dotenv
