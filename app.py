@@ -6,7 +6,6 @@ from utils import salt_hash_password, verify_password
 from bson.json_util import dumps
 from flask_jwt_extended import JWTManager, create_access_token, get_jwt_identity, jwt_required
 import datetime
-import json
 
 
 config = dotenv_values(".env")
