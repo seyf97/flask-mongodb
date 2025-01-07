@@ -1,14 +1,18 @@
-from mongoengine import Document, StringField, ReferenceField, CASCADE
-
+from mongoengine import Document, StringField, ReferenceField, CASCADE, DateTimeField
+import datetime
 
 class User(Document):
-    email = StringField(required=True)
-    first_name = StringField(max_length=100)
-    last_name = StringField(max_length=100)
+    email = StringField(required=True, unique=True)
+    password = StringField(required=True)
+    salt = StringField()
 
 class Post(Document):
-    title = StringField(max_length=250, required=True)
+    title = StringField(required=True)
+    content = StringField(required=True)
+    created_at = DateTimeField(default=datetime.datetime.now(datetime.UTC))
     author = ReferenceField(User, reverse_delete_rule=CASCADE)
+    category = StringField()
+    last_edited = DateTimeField()
 
     meta = {"allow_inheritance": True}
 
