@@ -1,3 +1,9 @@
-GET http://localhost:5000/users
+GET http://localhost:5000/posts
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTczNjI4OTM5MiwianRpIjoiZTNjN2I2ZmUtMGM2YS00ZDZlLWJhNmMtYmQ4Zjk1YzU3ZGU2IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6InRlc0BleGFtcGxlLmNvbSIsIm5iZiI6MTczNjI4OTM5MiwiY3NyZiI6IjAwMmM4MTI2LWNhYmItNGM3Yy1hYTNlLWE1N2U0MTAzMjc2NSIsImV4cCI6MTczNjI5Mjk5Mn0.4rn4ImeNE7Bt7450KNs5WcXWOQ7ri58RLIMTTbocZY0
+
+
+{
+    "email": "tes@example.com",
+    "password": "test"
+}
