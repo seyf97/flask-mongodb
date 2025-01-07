@@ -1,7 +1,7 @@
 Basic REST API which uses flask and mongodb under the hood
 
 TODO:
-- [ ] Change users with south park characters
-- [ ] Add a superpower to each character
-- [ ] Endpoint for fetching random character
-      
+- [ ] Add routes for creating and deleting posts
+- [ ] Add pagination for viewing posts
+- [ ] Add comments for posts
+- [ ] Add optional image url for user profiles
