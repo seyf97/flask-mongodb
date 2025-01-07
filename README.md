@@ -1,4 +1,4 @@
-Basic rest api which uses flask and mongodb under the hood
+Basic REST API which uses flask and mongodb under the hood
 
 TODO:
 - [ ] Change users with south park characters
