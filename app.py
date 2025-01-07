@@ -4,10 +4,20 @@ import mongoengine as me
 from model import User, Post
 from utils import salt_hash_password, verify_password
 from bson.json_util import dumps
+from flask_jwt_extended import JWTManager, create_access_token, get_jwt_identity, jwt_required
+import datetime
 
 
 config = dotenv_values(".env")
 app = Flask(__name__)
+
+app.config['SECRET_KEY'] = "Screw you guys, i'm going home. I'm sorry I thought this was America. I didn't hear no bell." 
+app.config["JWT_SECRET_KEY"] = '2d0d57c165e26cc4f75a128a398a2a3f'
+app.config['JWT_TOKEN_LOCATION'] = ['headers']
+app.config['JWT_ACCESS_TOKEN_EXPIRES'] = datetime.timedelta(seconds=3600)
+
+
+jwt = JWTManager(app)
 
 
 def init_mongo_client(app: Flask):
@@ -25,6 +35,7 @@ def hello():
     return {"message": "Welcome to the Flask with MongoDB tutorial!!!"}
 
 @app.route("/users")
+@jwt_required()
 def get_users():
 
     keys_to_filter = ["email", "_id"]
@@ -41,7 +52,6 @@ def get_users():
 
 @app.route("/register", methods=["POST"])
 def register():
-
     user_info = request.get_json(force=True, silent=True, cache=False)
 
     # Check if the JSON body is valid
@@ -115,4 +125,28 @@ def login():
     if not verify_password(user.password, db_user.salt, db_user.password):
         return jsonify({"message": "Incorrect email or password."}), 401
     
-    return jsonify({"message": "Logged in successfully."}), 200
+    # JWT token
+    jwt_token = create_access_token(identity=db_user.email)
+
+    return jsonify({"jwt_token": jwt_token,
+                    "message": "Logged in successfully."}), 200
+
+
+@app.route("/posts")
+@jwt_required()
+def get_posts():
+    user_email = get_jwt_identity()
+
+    db_user = User.objects(email=user_email).first()
+
+    if not db_user:
+        return jsonify({"message": "User not found."}), 404
+
+
+    posts = [post.to_mongo().to_dict() for post in Post.objects]
+        
+    return jsonify({"Posts": posts}), 200
+
+
+
+
