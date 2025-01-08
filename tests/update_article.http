@@ -3,7 +3,7 @@ Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTczNjMzODg2OCwianRpIjoiODA2NGY3NjYtNmJkOC00NzQzLTg3NjItNDYxMWFiMmNiNTQ1IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6InRlc3QyQGV4YW1wbGUuY29tIiwibmJmIjoxNzM2MzM4ODY4LCJjc3JmIjoiNzAyODE3NTQtOWIyZC00ODk1LWEyNWYtNWZlMjUwNzM5OTg5IiwiZXhwIjoxNzM2MzQyNDY4fQ.yYaAV5EUGE9qrtH2P1bmwtiNDBJhkS9GXYcMN5WYGZo
 
 {
-"title": "How to Help Nigerian Princes in Need: A Guide to Modern Philanthropy (Updated)",
-"content": "PART II: If you've ever opened your email inbox to find a message from a Nigerian prince asking for your assistance, congratulations! You've been chosen as a beacon of hope, a hero for the royally unfortunate. Forget about celebrity charity galas or adopting rescue cats—helping a Nigerian prince is the ultimate flex in altruism. Here's how to dive into this noble cause without losing your kingdom (or your savings account).",
-"category": "Humour"
+    "title": "How to Help Nigerian Princes in Need: A Guide to Modern Philanthropy (Updated)",
+    "content": "PART II: If you've ever opened your email inbox to find a message from a Nigerian prince asking for your assistance, congratulations! You've been chosen as a beacon of hope, a hero for the royally unfortunate. Forget about celebrity charity galas or adopting rescue cats—helping a Nigerian prince is the ultimate flex in altruism. Here's how to dive into this noble cause without losing your kingdom (or your savings account).",
+    "category": "Humour"
 }

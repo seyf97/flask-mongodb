@@ -1,9 +1,9 @@
 POST http://localhost:5000/articles
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTczNjMzMjgyMiwianRpIjoiMzU2M2E2N2MtYmU3Mi00Y2UzLTlmZjAtMTZkNzU1YzI0ZTcwIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6InRlc3QyQGV4YW1wbGUuY29tIiwibmJmIjoxNzM2MzMyODIyLCJjc3JmIjoiMTVmNmM4NzgtMDdhMy00NDhiLTk0MjUtNWJhNjg1OTNlMDI2IiwiZXhwIjoxNzM2MzM2NDIyfQ.2TvA27ORzS2lILCcQ0WoHZlLqIQW75cK-ss5mIAybc8
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTczNjM0NzE0NiwianRpIjoiZGMxZTA4ZjMtYzA1MC00ZmRiLTgxZjMtOTA3OTY1ZjA4ODQxIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6InRlc3RAZXhhbXBsZS5jb20iLCJuYmYiOjE3MzYzNDcxNDYsImNzcmYiOiIyNTUzNjRmYi0xZGFkLTRlYmMtOTBjNy03YTdjMWExNTdiMDkiLCJleHAiOjE3MzYzNTA3NDZ9.cSP3Og8oYSdH7HEw_KXqBjKDnFDFLyo-7RGybEzTWIM
 
 {
-"title": "How to Help Nigerian Princes in Need: A Guide to Modern Philanthropy",
-"content": "If you've ever opened your email inbox to find a message from a Nigerian prince asking for your assistance, congratulations! You've been chosen as a beacon of hope, a hero for the royally unfortunate. Forget about celebrity charity galas or adopting rescue cats—helping a Nigerian prince is the ultimate flex in altruism. Here's how to dive into this noble cause without losing your kingdom (or your savings account).",
-"category": "Philanthropy"
+    "title": "How to Help Nigerian Princes in Need: A Guide to Modern Philanthropy",
+    "content": "If you've ever opened your email inbox to find a message from a Nigerian prince asking for your assistance, congratulations! You've been chosen as a beacon of hope, a hero for the royally unfortunate. Forget about celebrity charity galas or adopting rescue cats—helping a Nigerian prince is the ultimate flex in altruism. Here's how to dive into this noble cause without losing your kingdom (or your savings account).",
+    "category": "Philanthropy"
 }

@@ -138,7 +138,6 @@ def login():
 @app.route("/articles")
 @jwt_required()
 def get_articles():
-
     user_email = get_jwt_identity()
 
     # Get the user
@@ -146,9 +145,37 @@ def get_articles():
     if not db_user:
         return jsonify({"message": "User not found."}), 404
     
+    print(Article.objects.count())
+    
     articles = [article.to_dict() for article in Article.objects]
         
     return jsonify({"Articles": articles}), 200
+
+
+@app.route("/article/<string:blogpost_id>")
+@jwt_required()
+def get_article(blogpost_id: str):
+    user_email = get_jwt_identity()
+
+    # Get the user
+    db_user = User.objects(email=user_email).first()
+    if not db_user:
+        return jsonify({"message": "User not found."}), 404
+    
+    # Get the article
+    try:
+        article = Article.objects(pk=blogpost_id).first()
+        print(article)
+    except me.errors.ValidationError as exc:
+        print(exc)
+        return jsonify({"message": f"Invalid Article ID. {exc}"}), 400
+
+    # Valid Article ID but doesn't exist
+    if not article:
+        return jsonify({"message": "Article not found."}), 404
+    
+        
+    return jsonify({"Article": article.to_dict()}), 200
 
 
 @app.route("/articles", methods=["POST"])
