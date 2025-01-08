@@ -145,11 +145,34 @@ def get_articles():
     if not db_user:
         return jsonify({"message": "User not found."}), 404
     
-    print(Article.objects.count())
+    # Get query params for pagination
+    page = request.args.get("page", default=1, type=int)
+    limit = request.args.get("limit", default=10, type=int)
+
+    if page < 1:
+        return jsonify({"message": "Page has to be a positive integer."}), 404
     
-    articles = [article.to_dict() for article in Article.objects]
+    if limit < 1:
+        return jsonify({"message": "Limit has to be a positive integer."}), 404
+
+    start = (page - 1)*limit
+
+    articles = Article.objects[start:(start + limit)].order_by("title")
+    
+    article_list = [article.to_dict() for article in articles]
+
+    total_articles = Article.objects.count()
+    num_articles = len(article_list)
+
+
+    return jsonify({
+        "page": page,
+        "limit": limit,
+        "num_articles": num_articles,
+        "total_articles": total_articles,
+        "articles": article_list
+    }), 200
         
-    return jsonify({"Articles": articles}), 200
 
 
 @app.route("/article/<string:blogpost_id>")

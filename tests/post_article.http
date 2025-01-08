@@ -1,9 +1,9 @@
 POST http://localhost:5000/articles
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTczNjM0NzE0NiwianRpIjoiZGMxZTA4ZjMtYzA1MC00ZmRiLTgxZjMtOTA3OTY1ZjA4ODQxIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6InRlc3RAZXhhbXBsZS5jb20iLCJuYmYiOjE3MzYzNDcxNDYsImNzcmYiOiIyNTUzNjRmYi0xZGFkLTRlYmMtOTBjNy03YTdjMWExNTdiMDkiLCJleHAiOjE3MzYzNTA3NDZ9.cSP3Og8oYSdH7HEw_KXqBjKDnFDFLyo-7RGybEzTWIM
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTczNjM0ODIzNSwianRpIjoiZTk1NzI3ZDItNWJhMy00ODFkLWEwODMtZTRmMWJmZmRmOTc3IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6InRlc3RAZXhhbXBsZS5jb20iLCJuYmYiOjE3MzYzNDgyMzUsImNzcmYiOiJiZDJjZmFkNS03ZjhhLTRmMTItYjc2ZS00ZjVhMzFmYzE4MTkiLCJleHAiOjE3MzYzNTE4MzV9.znqKfloCpK8G0hher4VaDXmUAds0zStBqwz-Gcl8_aE
 
-{
-    "title": "How to Help Nigerian Princes in Need: A Guide to Modern Philanthropy",
-    "content": "If you've ever opened your email inbox to find a message from a Nigerian prince asking for your assistance, congratulations! You've been chosen as a beacon of hope, a hero for the royally unfortunate. Forget about celebrity charity galas or adopting rescue cats—helping a Nigerian prince is the ultimate flex in altruism. Here's how to dive into this noble cause without losing your kingdom (or your savings account).",
-    "category": "Philanthropy"
-}
+    {
+        "title": "Cooking with Fire Extinguishers: The Ultimate Kitchen Hack",
+        "content": "Who needs an oven when you have a fire extinguisher? Learn how to extinguish hunger with this bold approach to modern cooking. Warning: Not for the faint of heart or taste buds.",
+        "category": "Cooking"
+    }
