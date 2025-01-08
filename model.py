@@ -1,10 +1,16 @@
-from mongoengine import Document, StringField, ReferenceField, CASCADE, DateTimeField
+from mongoengine import Document, StringField, ReferenceField, DateTimeField, CASCADE
 import datetime
 
 class User(Document):
     email = StringField(required=True, unique=True)
     password = StringField(required=True)
     salt = StringField()
+
+    def to_dict(self) -> dict:
+        return {
+            "_id": str(self.pk),
+            "email": self.email
+        }
 
 class Article(Document):
     title = StringField(required=True)
@@ -14,5 +20,13 @@ class Article(Document):
     category = StringField()
     last_edited = DateTimeField()
 
-    meta = {"allow_inheritance": True}
-
+    def to_dict(self) -> dict:
+        return {
+            "_id": str(self.pk),
+            "title": self.title,
+            "content": self.content,
+            "created_at": self.created_at.isoformat(),
+            "author": str(self.author.pk),
+            "category": self.category,
+            "last_edited": self.last_edited.isoformat() if self.last_edited else None
+        }

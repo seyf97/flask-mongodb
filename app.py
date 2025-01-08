@@ -3,9 +3,10 @@ from flask import Flask, request, jsonify
 import mongoengine as me
 from model import User, Article
 from utils import salt_hash_password, verify_password
-from bson.json_util import dumps
+from bson import json_util
 from flask_jwt_extended import JWTManager, create_access_token, get_jwt_identity, jwt_required
 import datetime
+import json
 
 
 config = dotenv_values(".env")
@@ -19,6 +20,11 @@ app.config['JWT_ACCESS_TOKEN_EXPIRES'] = datetime.timedelta(seconds=3600)
 
 jwt = JWTManager(app)
 
+# Custom callback for expired tokens for consistency
+@jwt.expired_token_loader
+def expired_token_callback(jwt_header, jwt_payload):
+    return jsonify({"message": "Token has expired"}), 401
+
 
 def init_mongo_client(app: Flask):
     try:
@@ -31,39 +37,40 @@ init_mongo_client(app)
 
 
 @app.route("/")
-def hello():
+def home():
     return {"message": "Welcome to the Flask with MongoDB tutorial!!!"}
 
 @app.route("/users")
 @jwt_required()
 def get_users():
 
-    users = [{"email": user.email, "_id": str(user.pk)} for user in User.objects]
+    users = [user.to_dict() for user in User.objects]
+    # users = [user.to_dict() for user in User.objects]
 
     return jsonify(users), 200
 
 @app.route("/register", methods=["POST"])
 def register():
-    user_info = request.get_json(force=True, silent=True, cache=False)
+    article_info = request.get_json(force=True, silent=True, cache=False)
 
     # Check if the JSON body is valid
-    if user_info is None:
+    if article_info is None:
         return jsonify({"message": "Invalid JSON body."}), 400
     
     # Check the fields
-    email = user_info.get("email")
-    password = user_info.get("password")
+    email = article_info.get("email")
+    password = article_info.get("password")
 
     if not email or not password:
         return jsonify({"message": "email and password are required."}), 400
     
-    if len(user_info.keys()) > 2:
+    if len(article_info.keys()) > 2:
         return jsonify({"message": "Only email and password fields are allowed."}), 400
     
     # Check if the required fields are present
     # Technically should work since the prev checks should have caught this
     try:
-        user = User(**user_info)
+        user = User(**article_info)
     except me.errors.FieldDoesNotExist:
         return jsonify({"message": "Invalid field name."}), 400
     
@@ -78,31 +85,30 @@ def register():
 
     user.save()
 
-    return jsonify({"message": "Saved new user successfully."}), 200
-
+    return jsonify({"message": "Saved new user successfully."}), 201
 
 @app.route("/login", methods=["POST"])
 def login():
-    user_info = request.get_json(force=True, silent=True, cache=False)
+    article_info = request.get_json(force=True, silent=True, cache=False)
 
     # Check if the JSON body is valid
-    if user_info is None:
+    if article_info is None:
         return jsonify({"message": "Invalid JSON body."}), 400
     
     # Check the fields
-    email = user_info.get("email")
-    password = user_info.get("password")
+    email = article_info.get("email")
+    password = article_info.get("password")
 
     if not email or not password:
         return jsonify({"message": "email and password are required."}), 400
     
-    if len(user_info.keys()) > 2:
+    if len(article_info.keys()) > 2:
         return jsonify({"message": "Only email and password fields are allowed."}), 400
     
     # Check if the required fields are present
     # Technically should work since the prev checks should have caught this
     try:
-        user = User(**user_info)
+        user = User(**article_info)
     except me.errors.FieldDoesNotExist:
         return jsonify({"message": "Invalid field name."}), 400
     
@@ -129,15 +135,36 @@ def login():
 def get_articles():
     user_email = get_jwt_identity()
 
+    # Get the user
     db_user = User.objects(email=user_email).first()
-
     if not db_user:
         return jsonify({"message": "User not found."}), 404
-
-
-    articles = [article.to_mongo().to_dict() for article in Article.objects]
+    
+    articles = [article.to_dict() for article in Article.objects]
         
     return jsonify({"Articles": articles}), 200
 
 
-# @app.route("")
+@app.route("/articles", methods=["POST"])
+@jwt_required()
+def post_article():
+    article_info = request.get_json(force=True, silent=True, cache=False)
+
+    # Check if the JSON body is valid
+    if article_info is None:
+        return jsonify({"message": "Invalid JSON body."}), 400
+
+    user_email = get_jwt_identity()
+
+    # Get the user
+    db_user = User.objects(email=user_email).first()
+    if not db_user:
+        return jsonify({"message": "User not found."}), 404
+    
+    article = Article(**article_info)
+    article.author = db_user
+    article.last_edited = None
+
+    article.save()
+
+    return jsonify({"message": "Posted article successfully."}), 201

@@ -1,0 +1,9 @@
+POST http://localhost:5000/articles
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTczNjMyNDAzMywianRpIjoiNTYyMzJkYTQtYjVhNC00Mjc0LWFhODctYzk4ZWE0YmIzM2FiIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6InRlc3RAZXhhbXBsZS5jb20iLCJuYmYiOjE3MzYzMjQwMzMsImNzcmYiOiJlZGM3MTQ1NS1lYWQ0LTRjMWUtOTA4My0zYjEzNDExYjlkZDgiLCJleHAiOjE3MzYzMjc2MzN9.Fo6yiD5g4cx4rIu9ttttf1ClrGqaosASOHHck8PX35E
+
+{
+"title": "How to Help Nigerian Princes in Need: A Guide to Modern Philanthropy",
+"content": "If you've ever opened your email inbox to find a message from a Nigerian prince asking for your assistance, congratulations! You've been chosen as a beacon of hope, a hero for the royally unfortunate. Forget about celebrity charity galas or adopting rescue cats—helping a Nigerian prince is the ultimate flex in altruism. Here's how to dive into this noble cause without losing your kingdom (or your savings account).",
+"category": "Philanthropy"
+}
