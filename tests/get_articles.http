@@ -1,0 +1,9 @@
+GET http://localhost:5000/articles
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTczNjMyMTk3NiwianRpIjoiOWU2OWEzM2ItYTdlYi00NDMwLTk3MmUtZmI4NDY5ZTZkODgwIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6InRlc0BleGFtcGxlLmNvbSIsIm5iZiI6MTczNjMyMTk3NiwiY3NyZiI6ImQ1NWJjODZmLWQ2ZDgtNGI3MS1hMTk2LWYwNTk2NjY2YWNiMSIsImV4cCI6MTczNjMyNTU3Nn0.pHrK4Zfv1rSQAUgXhZ3xCN-kIatk_yQMMkLs_CC_LSM
+
+
+{
+    "email": "tes@example.com",
+    "password": "test"
+}

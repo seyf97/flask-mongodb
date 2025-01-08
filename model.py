@@ -6,7 +6,7 @@ class User(Document):
     password = StringField(required=True)
     salt = StringField()
 
-class Post(Document):
+class Article(Document):
     title = StringField(required=True)
     content = StringField(required=True)
     created_at = DateTimeField(default=datetime.datetime.now(datetime.UTC))

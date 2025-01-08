@@ -1,7 +1,7 @@
 from dotenv import dotenv_values
-from flask import Flask, Response, request, jsonify
+from flask import Flask, request, jsonify
 import mongoengine as me
-from model import User, Post
+from model import User, Article
 from utils import salt_hash_password, verify_password
 from bson.json_util import dumps
 from flask_jwt_extended import JWTManager, create_access_token, get_jwt_identity, jwt_required
@@ -124,9 +124,9 @@ def login():
                     "message": "Logged in successfully."}), 200
 
 
-@app.route("/posts")
+@app.route("/articles")
 @jwt_required()
-def get_posts():
+def get_articles():
     user_email = get_jwt_identity()
 
     db_user = User.objects(email=user_email).first()
@@ -135,10 +135,9 @@ def get_posts():
         return jsonify({"message": "User not found."}), 404
 
 
-    posts = [post.to_mongo().to_dict() for post in Post.objects]
+    articles = [article.to_mongo().to_dict() for article in Article.objects]
         
-    return jsonify({"Posts": posts}), 200
+    return jsonify({"Articles": articles}), 200
 
 
-
-
+# @app.route("")
