@@ -4,7 +4,7 @@ import mongoengine as me
 import datetime
 from dotenv import dotenv_values
 from model import User, Article
-from utils import salt_hash_password, verify_password
+from utils import salt_hash_password, verify_password, set_fields
 
 
 config = dotenv_values(".env")
@@ -40,6 +40,7 @@ init_mongo_client(app)
 def home():
     return {"message": "Welcome to the Flask with MongoDB tutorial!!!"}
 
+
 @app.route("/users")
 @jwt_required()
 def get_users():
@@ -49,46 +50,50 @@ def get_users():
 
     return jsonify(users), 200
 
+
 @app.route("/register", methods=["POST"])
 def register():
-    article_info = request.get_json(force=True, silent=True, cache=False)
+
+    user_info = request.get_json(force=True, silent=True, cache=False)
 
     # Check if the JSON body is valid
-    if article_info is None:
+    if user_info is None:
         return jsonify({"message": "Invalid JSON body."}), 400
     
     # Check the fields
-    email = article_info.get("email")
-    password = article_info.get("password")
+    email = user_info.get("email")
+    password = user_info.get("password")
 
     if not email or not password:
-        return jsonify({"message": "email and password are required."}), 400
-    
-    if len(article_info.keys()) > 2:
-        return jsonify({"message": "Only email and password fields are allowed."}), 400
-    
-    # Check if the required fields are present
-    # Technically should work since the prev checks should have caught this
-    try:
-        user = User(**article_info)
-    except me.errors.FieldDoesNotExist:
-        return jsonify({"message": "Invalid field name."}), 400
+        return jsonify({"message": "Email and password are required."}), 400
     
     # Check if the user already exists
-    if User.objects(email=user.email):
+    if User.objects(email=email):
         return jsonify({"message": "User already exists."}), 400
+    
+    # Set the fields
+    exclude_fields = ["salt"]
+    user = User()
+    try:
+        user = set_fields(user, user_info, exclude_fields)
+    except me.errors.FieldDoesNotExist as exc:
+        return jsonify({"message": str(exc)}), 400
     
     # Save the new user
     salt_n_hash = salt_hash_password(user.password)
     user.salt = salt_n_hash["salt"]
     user.password = salt_n_hash["hash"]
 
-    user.save()
+    try:
+        user.save()
+    except me.errors.ValidationError as exc:
+        return jsonify({"message": str(exc)}), 400
 
     return jsonify({"message": "Saved new user successfully."}), 201
 
 @app.route("/login", methods=["POST"])
 def login():
+
     article_info = request.get_json(force=True, silent=True, cache=False)
 
     # Check if the JSON body is valid
@@ -133,6 +138,7 @@ def login():
 @app.route("/articles")
 @jwt_required()
 def get_articles():
+
     user_email = get_jwt_identity()
 
     # Get the user
@@ -165,9 +171,13 @@ def post_article():
     article.author = db_user
     article.last_edited = None
 
-    article.save()
+    try:
+        article.save()
+    except me.errors.ValidationError as exc:
+        return jsonify({"message": str(exc)}), 400
 
     return jsonify({"message": "Posted article successfully."}), 201
+
 
 
 @app.route("/articles/<string:blogpost_id>", methods=["DELETE"])
@@ -226,20 +236,22 @@ def update_article(blogpost_id: str):
     # Valid Article ID but doesn't exist
     if not article:
         return jsonify({"message": "Article not found."}), 404
-    
-    article_fields = list(Article._fields.keys())
 
-    # Update the article 
-    for k, v in article_info.items():
-        if k == "id" or k not in article_fields:
-            return jsonify({"message": f"Field {k} is not valid"}), 400
-        setattr(article, k, v)
+    # Update article
+    exclude_fields = ["last_edited", "created_at", "author"]
+    try:
+        article = set_fields(article, article_info, exclude_fields)
+    except me.errors.FieldDoesNotExist as exc:
+        return jsonify({"message": str(exc)}), 400
 
     # Update the last edited time
     article.last_edited = datetime.datetime.now(datetime.UTC)
 
     # Save article
-    article.save()
+    try:
+        article.save()
+    except me.errors.ValidationError as exc:
+        return jsonify({"message": str(exc)}), 400
 
     return jsonify({"message": "Article updated successfully"}), 200
 

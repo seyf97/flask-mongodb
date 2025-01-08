@@ -1,24 +1,27 @@
-from mongoengine import Document, StringField, ReferenceField, DateTimeField, CASCADE
+import mongoengine as me
 import datetime
 
-class User(Document):
-    email = StringField(required=True, unique=True)
-    password = StringField(required=True)
-    salt = StringField()
+class User(me.Document):
+    email = me.EmailField(required=True, unique=True)
+    image = me.URLField()
+
+    password = me.StringField(required=True)
+    salt = me.StringField()
 
     def to_dict(self) -> dict:
         return {
             "_id": str(self.pk),
-            "email": self.email
+            "email": self.email,
+            "image": self.image
         }
 
-class Article(Document):
-    title = StringField(required=True)
-    content = StringField(required=True)
-    created_at = DateTimeField(default=datetime.datetime.now(datetime.UTC))
-    author = ReferenceField(User, reverse_delete_rule=CASCADE)
-    category = StringField()
-    last_edited = DateTimeField()
+class Article(me.Document):
+    title = me.StringField(required=True)
+    content = me.StringField(required=True)
+    created_at = me.DateTimeField(default=datetime.datetime.now(datetime.UTC))
+    author = me.ReferenceField(User, reverse_delete_rule=me.CASCADE)
+    category = me.StringField()
+    last_edited = me.DateTimeField()
 
     def to_dict(self) -> dict:
         return {
