@@ -188,12 +188,59 @@ def delete_article(blogpost_id: str):
         print(exc)
         return jsonify({"message": f"Invalid Article ID. {exc}"}), 400
 
-    # Valid Article ID but not found
+    # Valid Article ID but doesn't exist
     if not article:
         return jsonify({"message": "Article not found."}), 404
     
     # Delete the article
     article.delete()
 
-
     return jsonify({"message": f"Article {blogpost_id} deleted successfully."}), 200
+
+
+
+@app.route("/articles/<string:blogpost_id>", methods=["PUT"])
+@jwt_required()
+def update_article(blogpost_id: str):
+
+    # Check if the JSON body is valid
+    article_info = request.get_json(force=True, silent=True, cache=False)
+    if article_info is None:
+        return jsonify({"message": "Invalid JSON body."}), 400
+
+    user_email = get_jwt_identity()
+
+    # Get the user
+    db_user = User.objects(email=user_email).first()
+    if not db_user:
+        return jsonify({"message": "User not found."}), 404
+    
+    # Get the article
+    try:
+        article = Article.objects(pk=blogpost_id).first()
+        print(article)
+    except me.errors.ValidationError as exc:
+        print(exc)
+        return jsonify({"message": f"Invalid Article ID. {exc}"}), 400
+
+    # Valid Article ID but doesn't exist
+    if not article:
+        return jsonify({"message": "Article not found."}), 404
+    
+    article_fields = list(Article._fields.keys())
+
+    # Update the article 
+    for k, v in article_info.items():
+        if k == "id" or k not in article_fields:
+            return jsonify({"message": f"Field {k} is not valid"}), 400
+        setattr(article, k, v)
+
+    # Update the last edited time
+    article.last_edited = datetime.datetime.now(datetime.UTC)
+
+    # Save article
+    article.save()
+
+    return jsonify({"message": "Article updated successfully"}), 200
+
+    
