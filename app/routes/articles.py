@@ -161,6 +161,10 @@ def update_article(blogpost_id: str):
     # Valid Article ID but doesn't exist
     if not article:
         return jsonify({"message": "Article not found."}), 404
+    
+    # Check if the user is the author:
+    if str(article.author.pk) != str(db_user.pk):
+        return jsonify({"message": "Only authors can edit articles."}), 405
 
     # Update article
     exclude_fields = ["last_edited", "created_at", "author"]
