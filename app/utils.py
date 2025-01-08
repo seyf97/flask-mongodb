@@ -1,6 +1,3 @@
-from typing import Mapping, Any
-from flask import Response
-from bson import json_util
 import hashlib
 import os
 import mongoengine as me
@@ -44,28 +41,3 @@ def verify_password(password: str, db_salt: str, db_hash: str, salt_bytes: int=1
     hash_digest = hashlib.sha256(salted_password).hexdigest()
 
     return hash_digest == db_hash
-
-
-def set_fields(doc: me.Document, in_fields: dict, exclude_fields: list[str]) -> me.Document:
-    """
-    doc: Document to set fields
-    in_fields: Fields to set in the document
-    exclude_fields: Fields to exclude from the document. Excludes id by default.
-    """
-
-    # Default exclude id
-    if exclude_fields is None:
-        exclude_fields = ["id"]
-    else:
-        exclude_fields.append("id")
-
-    doc_fields = list(set(doc._fields.keys()) - set(exclude_fields))
-
-    # Iterate, raise exception if field not in document
-    for field in in_fields:
-        if field not in doc_fields:
-            raise me.errors.FieldDoesNotExist(f"Field '{field}' is not valid")
-
-        setattr(doc, field, in_fields[field])
-
-    return doc

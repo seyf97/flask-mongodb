@@ -2,7 +2,6 @@ POST http://localhost:5000/register
 Content-Type: application/json
 
 {
-    "email": "test@example.com",
-    "image": "https://upload.wikimedia.org/wikipedia/en/4/4d/Shrek_%28character%29.png",
+    "email": "test100@example.com",
     "password": "test"
 }

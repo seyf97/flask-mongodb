@@ -1,19 +1,6 @@
 import mongoengine as me
 import datetime
-
-class User(me.Document):
-    email = me.EmailField(required=True, unique=True)
-    image = me.URLField()
-
-    password = me.StringField(required=True)
-    salt = me.StringField()
-
-    def to_dict(self) -> dict:
-        return {
-            "_id": str(self.pk),
-            "email": self.email,
-            "image": self.image
-        }
+from app.models.user import User
 
 class Article(me.Document):
     title = me.StringField(required=True)

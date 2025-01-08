@@ -1,9 +1,9 @@
 POST http://localhost:5000/articles
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTczNjM0ODIzNSwianRpIjoiZTk1NzI3ZDItNWJhMy00ODFkLWEwODMtZTRmMWJmZmRmOTc3IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6InRlc3RAZXhhbXBsZS5jb20iLCJuYmYiOjE3MzYzNDgyMzUsImNzcmYiOiJiZDJjZmFkNS03ZjhhLTRmMTItYjc2ZS00ZjVhMzFmYzE4MTkiLCJleHAiOjE3MzYzNTE4MzV9.znqKfloCpK8G0hher4VaDXmUAds0zStBqwz-Gcl8_aE
-
-    {
-        "title": "Cooking with Fire Extinguishers: The Ultimate Kitchen Hack",
-        "content": "Who needs an oven when you have a fire extinguisher? Learn how to extinguish hunger with this bold approach to modern cooking. Warning: Not for the faint of heart or taste buds.",
-        "category": "Cooking"
-    }
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTczNjM1NDE4OSwianRpIjoiNDhmNDAwYTItZTZmMC00YWI2LTkwNWQtZDE1YjE0YTM0MThiIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6InRlc3RAZXhhbXBsZS5jb20iLCJuYmYiOjE3MzYzNTQxODksImNzcmYiOiI4MTA0YzRlYi1mNTJhLTQ4M2YtOWFlZi0zYjdjOGViNzRiOWYiLCJleHAiOjE3MzYzNTc3ODl9.Rl-Ykuh5yUlvdi3VDuCk0PA5H7Vq4mVywCLvqWb_JU8
+   
+{
+    "title": "Cooking Snacks: The Ultimate Experience",
+    "content": "Who needs an oven when you have a fire extinguisher? Learn how to extinguish hunger with this bold approach to modern cooking. Warning: Not for the faint of heart or taste buds.",
+    "category": "Cooking"
+}
