@@ -1,12 +1,10 @@
-from dotenv import dotenv_values
 from flask import Flask, request, jsonify
+from flask_jwt_extended import JWTManager, create_access_token, get_jwt_identity, jwt_required
 import mongoengine as me
+import datetime
+from dotenv import dotenv_values
 from model import User, Article
 from utils import salt_hash_password, verify_password
-from bson import json_util
-from flask_jwt_extended import JWTManager, create_access_token, get_jwt_identity, jwt_required
-import datetime
-import json
 
 
 config = dotenv_values(".env")
@@ -16,16 +14,18 @@ app.config['SECRET_KEY'] = "Screw you guys, i'm going home. I'm sorry I thought 
 app.config["JWT_SECRET_KEY"] = '2d0d57c165e26cc4f75a128a398a2a3f'
 app.config['JWT_TOKEN_LOCATION'] = ['headers']
 app.config['JWT_ACCESS_TOKEN_EXPIRES'] = datetime.timedelta(seconds=3600)
+app.config["JWT_ERROR_MESSAGE_KEY"] = "message"  # I just don't like the default "msg" key
 
 
 jwt = JWTManager(app)
 
-# Custom callback for expired tokens for consistency
-@jwt.expired_token_loader
-def expired_token_callback(jwt_header, jwt_payload):
-    return jsonify({"message": "Token has expired"}), 401
 
+# We don't wanna see html pages for 404 errors
+@app.errorhandler(404)
+def page_not_found(e):
+    return jsonify({"message": "The requested URL was not found on the server."}), 404
 
+# Initialize the mongo client for testing 
 def init_mongo_client(app: Flask):
     try:
         me.connect(config["DB_NAME"], host="localhost", port=27017)
@@ -168,3 +168,32 @@ def post_article():
     article.save()
 
     return jsonify({"message": "Posted article successfully."}), 201
+
+
+@app.route("/articles/<string:blogpost_id>", methods=["DELETE"])
+@jwt_required()
+def delete_article(blogpost_id: str):
+    user_email = get_jwt_identity()
+
+    # Get the user
+    db_user = User.objects(email=user_email).first()
+    if not db_user:
+        return jsonify({"message": "User not found."}), 404
+    
+    # Get the article
+    try:
+        article = Article.objects(pk=blogpost_id).first()
+        print(article)
+    except me.errors.ValidationError as exc:
+        print(exc)
+        return jsonify({"message": f"Invalid Article ID. {exc}"}), 400
+
+    # Valid Article ID but not found
+    if not article:
+        return jsonify({"message": "Article not found."}), 404
+    
+    # Delete the article
+    article.delete()
+
+
+    return jsonify({"message": f"Article {blogpost_id} deleted successfully."}), 200
