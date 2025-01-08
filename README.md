@@ -4,4 +4,4 @@ TODO:
 - [X] Add routes for creating, updating and deleting posts
 - [ ] Add pagination for viewing posts
 - [ ] Add comments for posts
-- [ ] Add optional image url for user profiles
+- [X] Add optional image url for user profiles
