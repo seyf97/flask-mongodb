@@ -1,0 +1,59 @@
+tags:
+  - Users
+summary: "Login an existing user"
+description: >
+  Authenticates an existing user. 
+  JWT auth token is provided in the response.
+
+parameters:
+  - in: body
+    name: body
+    required: true
+    description: "The user details to create a new user."
+    schema:
+      type: object
+      required:
+        - email
+        - password
+      properties:
+        email:
+          type: string
+          example: "user@example.com"
+        password:
+          type: string
+          example: "password"
+
+responses:
+  201:
+    description: "Status OK: Logged in successfully."
+    schema:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Logged in successfully."
+        jwt_token:
+          type: string
+          example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTIzNDU2Nzg5LCJuYW1lIjoiSm9zZXBoIn0.OpOSSw7e485LOP5PrzScxHb7SR6sAOMRckfFwi4rp7o"
+  400:
+    description: >
+      Bad Request. Possible reasons:
+        - Invalid JSON body
+        - Email and password are required.
+        - Invalid field name.
+        - Validation Error
+    schema:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Invalid JSON body"
+  401:
+    description: >
+      Unauthorized. Incorrect email or password.
+    schema:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Incorrect email or password"

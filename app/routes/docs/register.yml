@@ -1,0 +1,50 @@
+tags:
+  - Users
+summary: "Register a new user"
+description: >
+  This endpoint registers a new user. 
+  The users must provide their details details in the request body as JSON.
+
+parameters:
+  - in: body
+    name: body
+    required: true
+    description: "The user details to create a new user."
+    schema:
+      type: object
+      required:
+        - email
+        - password
+      properties:
+        email:
+          type: string
+          example: "user@example.com"
+        password:
+          type: string
+          example: "password"
+        image: 
+          type: string
+          example: "http://profile_picture.com"
+
+responses:
+  201:
+    description: "Status Created: Saved a new user."
+    schema:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Saved new user successfully."
+  400:
+    description: >
+      Bad Request. Possible reasons:
+        - Invalid JSON body
+        - Email and password are required.
+        - Input body field doesn't exist
+        - Validation Error
+    schema:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Invalid JSON body"

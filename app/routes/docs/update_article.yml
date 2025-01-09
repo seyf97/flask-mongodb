@@ -51,7 +51,7 @@ responses:
       Bad Request. Possible reasons:
         - Invalid JSON body
         - Invalid Article ID
-        - Body field doesn't exist
+        - Input body field doesn't exist
         - Validation Error
     schema:
       type: object

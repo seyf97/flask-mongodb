@@ -1,14 +1,20 @@
 from flask import Blueprint, jsonify, request
 from flask_jwt_extended import create_access_token
+from flasgger import swag_from
 import mongoengine as me
 from app.models.user import User
 from app.utils import salt_hash_password, verify_password
 from app.db import set_fields
+import os
 
 bp = Blueprint('users', __name__, url_prefix = None)
 
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+
 
 @bp.route("/register", methods=["POST"])
+@swag_from(os.path.join(BASE_DIR, "docs/register.yml"))
 def register():
 
     user_info = request.get_json(force=True, silent=True, cache=False)
@@ -50,6 +56,7 @@ def register():
 
 
 @bp.route("/login", methods=["POST"])
+@swag_from(os.path.join(BASE_DIR, "docs/login.yml"))
 def login():
 
     user_info = request.get_json(force=True, silent=True, cache=False)
