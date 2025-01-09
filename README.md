@@ -1,4 +1,4 @@
-Basic REST API which uses flask and mongodb under the hood
+A Blog REST API which uses flask and mongodb under the hood
 
 TODO:
 - [X] Add routes for creating, updating and deleting posts
