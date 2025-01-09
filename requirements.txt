@@ -4,3 +4,4 @@ flasgger
 yamllint
 mongoengine
 python-dotenv
+pytest

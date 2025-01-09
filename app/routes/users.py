@@ -12,7 +12,6 @@ bp = Blueprint('users', __name__, url_prefix = None)
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 
-
 @bp.route("/register", methods=["POST"])
 @swag_from(os.path.join(BASE_DIR, "docs/register.yml"))
 def register():
