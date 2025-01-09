@@ -13,6 +13,16 @@ def test_user_model_normal():
     new_user.validate()
 
 
+def test_article_model_normal():
+    article = {
+        "title": "Test title",
+        "content": "Test content",
+        "category": "Test category"
+    }
+    new_article = Article(**article)
+    new_article.validate()
+
+
 def test_user_model_missing_field():
     user = {
         "email": "test@example.com",
@@ -23,11 +33,12 @@ def test_user_model_missing_field():
         new_user.validate()
 
 
-def test_normal_article_model():
+def test_article_model_missing_field():
     article = {
-        "title": "Test title",
         "content": "Test content",
         "category": "Test category"
     }
     new_article = Article(**article)
-    new_article.validate()
+    
+    with pytest.raises(me.errors.ValidationError) as e:
+        new_article.validate()
