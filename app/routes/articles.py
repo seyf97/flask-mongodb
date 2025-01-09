@@ -1,16 +1,21 @@
 from flask import Blueprint, jsonify, request
 from flask_jwt_extended import jwt_required, get_jwt_identity
+from flasgger import swag_from
 import mongoengine as me
 import datetime
+import os
 from app.models.article import Article
 from app.models.user import User
 from app.db import set_fields
 
 bp = Blueprint('articles', __name__, url_prefix = "/articles")
 
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
 
 @bp.route("/")
 @jwt_required()
+@swag_from(os.path.join(BASE_DIR, "docs/get_articles.yml"))
 def get_articles():
     user_email = get_jwt_identity()
 
@@ -51,6 +56,7 @@ def get_articles():
 
 @bp.route("/", methods=["POST"])
 @jwt_required()
+@swag_from(os.path.join(BASE_DIR, "docs/post_article.yml"))
 def post_article():
     article_info = request.get_json(force=True, silent=True, cache=False)
 
@@ -80,6 +86,7 @@ def post_article():
 
 @bp.route("/<string:blogpost_id>")
 @jwt_required()
+@swag_from(os.path.join(BASE_DIR, "docs/get_article.yml"))
 def get_article(blogpost_id: str):
     user_email = get_jwt_identity()
 
@@ -107,6 +114,7 @@ def get_article(blogpost_id: str):
 
 @bp.route("/<string:blogpost_id>", methods=["DELETE"])
 @jwt_required()
+@swag_from(os.path.join(BASE_DIR, "docs/delete_article.yml"))
 def delete_article(blogpost_id: str):
     user_email = get_jwt_identity()
 
@@ -136,6 +144,7 @@ def delete_article(blogpost_id: str):
 
 @bp.route("/<string:blogpost_id>", methods=["PUT"])
 @jwt_required()
+@swag_from(os.path.join(BASE_DIR, "docs/update_article.yml"))
 def update_article(blogpost_id: str):
 
     # Check if the JSON body is valid
@@ -182,6 +191,6 @@ def update_article(blogpost_id: str):
     except me.errors.ValidationError as exc:
         return jsonify({"message": str(exc)}), 400
 
-    return jsonify({"message": "Article updated successfully"}), 200
+    return jsonify({"message": f"Article {blogpost_id} updated successfully"}), 200
 
     

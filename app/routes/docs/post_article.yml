@@ -1,0 +1,61 @@
+tags:
+  - Articles
+summary: "Create a new article"
+description: >
+  This endpoint allows an authenticated user to create a new article. 
+  The user must provide the article details in the request body as JSON.
+
+security:
+  - bearerAuth: []  # Apply the Bearer authentication to this endpoint
+
+parameters:
+  - in: body
+    name: body
+    required: true
+    description: "The article details to create a new article."
+    schema:
+      type: object
+      required:
+        - title
+        - content
+      properties:
+        title:
+          type: string
+          example: "New Article"
+        content:
+          type: string
+          example: "This is the content of the new article."
+        category:
+          type: string
+          example: "Tech"
+
+responses:
+  201:
+    description: "Article created successfully."
+    schema:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Posted article successfully."
+  400:
+    description: >
+      Bad request. Possible reasons:
+      - Invalid JSON body.
+      - Validation error when saving the article.
+    schema:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Invalid JSON body."
+  404:
+    description: >
+      Not found. Possible reasons:
+      - Authenticated user not found.
+    schema:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "User not found."

@@ -1,0 +1,49 @@
+tags:
+  - Articles
+summary: "Delete a single article using the article id for an authenticated user."
+description: >
+  This endpoint updates a single article for the authenticated user.
+    - NOTE: Article ID must be 12 bytes. (MongoDB Object ID)
+    - The user must provide the article details in the request body as JSON, and must be the author of the original article.
+
+security:
+  - Bearer: []  # Apply the Bearer authentication to this endpoint
+
+parameters:
+  - in: path
+    name: blogpost_id
+    required: true
+    description: "The unique identifier of the article."
+    schema:
+      type: string
+      example: "64d3d6e5fbbf5f7b1f1e1f1e"
+
+responses:
+  200:
+    description: "Article deleted successfully."
+    schema:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Article 64d3d6e5fbbf5f7b1f1e1f1e deleted successfully."
+  400:
+    description: "Invalid Article ID or malformed request."
+    schema:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Invalid Article ID. ValidationError: ..."
+
+  404:
+    description: >
+      Not found. Possible reasons:
+        - User not found.
+        - Article not found.
+    schema:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "User not found."

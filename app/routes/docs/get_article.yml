@@ -1,0 +1,68 @@
+tags:
+  - Articles
+summary: "Get a single article using the article id for an authenticated user."
+description: >
+  This endpoint retrieves a single article for the authenticated user.
+    - NOTE: Article ID must be 12 bytes. (MongoDB Object ID)
+
+security:
+  - Bearer: []  # Apply the Bearer authentication to this endpoint
+
+parameters:
+  - in: path
+    name: blogpost_id
+    required: true
+    description: "The unique identifier of the article."
+    schema:
+      type: string
+      example: "64d3d6e5fbbf5f7b1f1e1f1e"
+
+responses:
+  200:
+    description: "The requested article."
+    schema:
+      type: object
+      properties:
+        Article:
+          type: object
+          properties:
+            id:
+              type: string
+              example: "64d3d6e5fbbf5f7b1f1e1f1e"
+            title:
+              type: string
+              example: "Sample Article"
+            content:
+              type: string
+              example: "This is the content of the sample article."
+            category:
+              type: string
+              example: "Tech"
+            created_at:
+              type: string
+              format: date-time
+              example: "2025-01-08T13:08:27.736000"
+            last_edited:
+              type: string
+              format: date-time
+              example: "2025-01-09T10:12:45.123000"
+  400:
+    description: "Invalid Article ID or malformed request."
+    schema:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Invalid Article ID. ValidationError: ..."
+
+  404:
+    description: >
+      Not found. Possible reasons:
+      - User not found.
+      - Article not found.
+    schema:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "User not found."

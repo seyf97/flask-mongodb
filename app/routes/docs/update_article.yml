@@ -1,0 +1,81 @@
+tags:
+  - Articles
+summary: "Updates a single article using the article id for an authenticated user."
+description: >
+  This endpoint updates a single article for the authenticated user.
+    - NOTE: Article ID must be 12 bytes. (MongoDB Object ID)
+    - The user must provide the article details in the request body as JSON, and must be the author of the original article.
+
+security:
+  - Bearer: []  # Apply the Bearer authentication to this endpoint
+
+parameters:
+  - in: path
+    name: blogpost_id
+    required: true
+    description: "The unique identifier of the article."
+    schema:
+      type: string
+      example: "64d3d6e5fbbf5f7b1f1e1f1e"
+  - in: body
+    name: body
+    required: true
+    description: "The article details to update a article."
+    schema:
+      type: object
+      required:
+        - title
+        - content
+      properties:
+        title:
+          type: string
+          example: "Title of the article"
+        content:
+          type: string
+          example: "This is the updated content of the article."
+        category:
+          type: string
+          example: "Tech"
+
+responses:
+  200:
+    description: "Article updated successfully."
+    schema:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Article 64d3d6e5fbbf5f7b1f1e1f1e updated successfully."
+  400:
+    description: >
+      Bad Request. Possible reasons:
+        - Invalid JSON body
+        - Invalid Article ID
+        - Body field doesn't exist
+        - Validation Error
+    schema:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Invalid JSON body"
+  404:
+    description: >
+      Not found. Possible reasons:
+        - User not found.
+        - Article not found.
+    schema:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "User not found."
+  405:
+    description: >
+      Method Not Allowed: Only authors can edit articles
+    schema:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Only authors can edit articles"
