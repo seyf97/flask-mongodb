@@ -7,4 +7,4 @@ TODO:
 - [X] Add pagination for viewing posts
 - [X] Add documentation
 - [X] Add optional image url for user profiles
-- [ ] Add tests
+- [X] Add tests
